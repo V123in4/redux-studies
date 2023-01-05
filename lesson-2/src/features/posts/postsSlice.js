@@ -1,8 +1,19 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
+import { sub } from "date-fns";
 
 const initialState = [
-	{ id: 1, title: "title1", content: "this is a long content 1" },
-	{ id: 2, title: "title2", content: "this is a long content 2" },
+	{
+		id: 1,
+		title: "title1",
+		content: "this is a long content 1",
+		date: sub(new Date(), { minutes: 10 }).toISOString(),
+	},
+	{
+		id: 2,
+		title: "title2",
+		content: "this is a long content 2",
+		date: sub(new Date(), { minutes: 5 }).toISOString(),
+	},
 ];
 
 const postsSlice = createSlice({
@@ -17,6 +28,7 @@ const postsSlice = createSlice({
 						id: nanoid(),
 						title,
 						content,
+						date: new Date().toISOString(),
 						userId,
 					},
 				};
@@ -25,8 +37,8 @@ const postsSlice = createSlice({
 			// this is called after the prepare
 			reducer(state, action) {
 				state.push(action.payload);
+				// state.sort((a, b) => new Date(b.date) - new Date(a.date));
 				// this doesnt mutate the state, there is another push method under the hood
-				console.log(action.payload);
 			},
 		},
 	},
